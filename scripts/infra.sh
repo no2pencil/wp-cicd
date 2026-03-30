@@ -42,6 +42,13 @@ up|UP)
 	## Update IP in security group
 	bash ${SCRIPT_DIR}/update-security-ip.sh ${ENV}
 
+	## Update Passwords on MySql Script
+	MySQLADMINPW=$(aws secretsmanager get-secret-value --secret-id WPSecret | grep SecretString | cut -d'"' -f11 | cut -d'\' -f1)
+	MYSQLUSERPW=$(aws secretsmanager get-secret-value --secret-id WPSecret | grep SecretString | cut -d'"' -f11 | cut -d'\' -f1)
+
+	sed -i "s/REMOVED1/${MySQLADMINPW}/g" ${SCRIPT_DIR}/mysql/setup_mysql.sh
+	sed -i "s/REMOVED2/${MySQLUSERPW}/g" ${SCRIPT_DIR}/mysql/setup_mysql.sh
+
 	echo "Provisioning infrastructure..."
 
 	cd ${TF_DIR}environments/${ENV}
@@ -56,6 +63,13 @@ up|UP)
 down|DOWN)
 	## Terraform - destroy
 	
+	## Revert Passwords on MySql Script
+	MySQLADMINPW=$(aws secretsmanager get-secret-value --secret-id WPSecret | grep SecretString | cut -d'"' -f11 | cut -d'\' -f1)
+	MYSQLUSERPW=$(aws secretsmanager get-secret-value --secret-id WPSecret | grep SecretString | cut -d'"' -f11 | cut -d'\' -f1)
+
+	sed -i "s/${MySQLADMINPW}/REMOVED1/g" ${SCRIPT_DIR}/mysql/setup_mysql.sh
+	sed -i "s/${MySQLUSERPW}/REMOVED2/g" ${SCRIPT_DIR}/mysql/setup_mysql.sh
+
 	echo "Destroy Terraform"
 	cd ${TF_DIR}environments/${ENV}
 	terraform destroy -auto-approve

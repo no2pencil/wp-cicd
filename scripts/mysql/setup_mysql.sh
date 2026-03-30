@@ -66,7 +66,7 @@ fi
 echo "Setuping WordPress MySql DB" >> ${logfile}
 echo "Gathering ROOT temporary creds" >> ${logfile}
 MYSQL_ROOT_OLD_PASSWORD=$(grep 'temporary password' /var/log/mysqld.log | cut -d: -f4 | awk '{print $1}')
-MYSQL_ROOT_PASSWORD="MyStrongPassword!"
+MYSQL_ROOT_PASSWORD="REMOVED1"
 
 # --- Change root password safely ---
 echo "Changing ROOT creds" >> ${logfile}
@@ -77,7 +77,7 @@ mysql --connect-expired-password -u root -p"${MYSQL_ROOT_OLD_PASSWORD}" \
 echo "Create WordPress DB" >> ${logfile}
 mysql -u root -p"${MYSQL_ROOT_PASSWORD}" <<SQL
 CREATE DATABASE IF NOT EXISTS vrg_blog;
-CREATE USER IF NOT EXISTS 'vrg'@'%' IDENTIFIED BY 'BbM8JrgoM6F1YEgI';
+CREATE USER IF NOT EXISTS 'vrg'@'%' IDENTIFIED BY 'REMOVED2';
 GRANT ALL PRIVILEGES ON vrg_blog.* TO 'vrg'@'%';
 FLUSH PRIVILEGES;
 SQL
