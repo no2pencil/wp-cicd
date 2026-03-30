@@ -47,8 +47,6 @@ fi
 echo "Initializing MySqld Service" >> ${logfile}
 cd /usr/local/mysql/bin
 mysqld --initialize --user=mysql 2> /var/log/mysqld.log
-## 2Mot_be6.YoP
-## mysqld --initialize --user=mysql --basedir=/usr/local/mysql --datadir=/var/lib/mysql
 
 # --- Start MySQL ---
 echo "Starting MySqld Service" >> ${logfile}
